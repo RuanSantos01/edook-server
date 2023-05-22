@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 
 const UserSchema = new mongoose.Schema(
     {
@@ -47,11 +48,29 @@ const UserSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            required: true
+            required: true,
+		    unique: true,
+        },
+        registration: {
+            type: String,
+            required: true,
+		    unique: true,
         }
     },
     {timestamps: true}
 );
+
+// static method to login user
+UserSchema.statics.login = async function(registration, password) {
+    const user = await this.findOne({ registration })
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password)
+        if (auth) {
+            return user
+        }
+    }
+    throw Error('incorrect credentials')
+}
 
 const User = mongoose.model("user", UserSchema);
 export default User;

@@ -1,10 +1,12 @@
 import express from "express";
-import { login, register } from "../controllers/auth.js";
+import * as authController from "../controllers/auth.js";
 
 const router = express.Router();
 
 // PRECISA SER IMPLEMENTADO COM AUTENTICAÇÃO JWT
-router.post("/login", login);
-router.post("/register", register);
+router.get("/login", authController.login_get);
+router.post("/login", authController.login_post);
+router.get("/register", authController.register_get);
+router.post("/register", authController.register_post);
 
 export default router;
