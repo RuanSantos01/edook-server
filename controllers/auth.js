@@ -81,7 +81,6 @@ export const login_post = async (req, res) => {
 
   try {
     const user = await User.login(registration, password)
-    console.log("test2")
     const token = createToken(user._id)
     // alterar para https!!!
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
