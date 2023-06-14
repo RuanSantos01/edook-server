@@ -32,36 +32,40 @@ export const register_get = (req, res) => {
 export const register_post = async (req, res) => {
   try {
     const {
+      picture,
       name,
-      socialName,
-      taxpayerRegister,
-      zipCode,
-      password,
-      district,
-      state,
-      city,
-      houseNumber,
-      phone,
+      gender,
+      registration,
+      cpf,
       email,
-      registration
+      birthDate,
+      phone,
+      zipCode,
+      address,
+      neighborhood,
+      city,
+      state,
+      password,
     } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const newUser = new User({
+      picture,
       name,
-      socialName,
-      taxpayerRegister,
-      zipCode,
-      password: passwordHash,
-      district,
-      state,
-      city,
-      houseNumber,
-      phone,
+      gender,
+      registration,
+      cpf,
       email,
-      registration
+      birthDate,
+      phone,
+      zipCode,
+      address,
+      neighborhood,
+      city,
+      state,
+      password: passwordHash,
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
@@ -83,12 +87,12 @@ export const login_post = async (req, res) => {
     const user = await User.login(registration, password)
     const token = createToken(user._id)
     // alterar para https!!!
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-    res.status(200).json({ user: user._id})
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.status(200).json({ user: user._id })
   }
   catch (err) {
     console.log(err)
     const errors = handleErrors(err)
-    res.status(400).json({errors})
+    res.status(400).json({ errors })
   }
 }

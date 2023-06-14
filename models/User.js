@@ -5,63 +5,59 @@ const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
             min: 2,
             max: 50
         },
-        socialName: {
+        gender: {
             type: String,
-            required: true,
             min: 5,
             max: 50
         },
-        taxpayerRegister: {
+        picture: {
+            type: String,
+        },
+        registration: {
+            type: String,
+            unique: true,
+        },
+        cpf: {
             type: Number,
         },
         zipCode: {
             type: String,
-            required: true
         },
         password: {
             type: String,
-            required: true
         },
-        district: {
+        neighborhood: {
             type: String,
-            required: true
+        },
+        birthDate: {
+            type: String,
         },
         state: {
             type: String,
-            required: true
         },
         city: {
             type: String,
-            required: true
         },
-        houseNumber: {
+        address: {
             type: String,
-            required: true
         },
         phone: {
             type: String,
-            required: true
         },
         email: {
             type: String,
-            required: true,
-		    unique: true,
+            unique: true,
         },
-        registration: {
-            type: String,
-            required: true,
-		    unique: true,
-        }
+
     },
-    {timestamps: true}
+    { timestamps: true }
 );
 
 // static method to login user
-UserSchema.statics.login = async function(registration, password) {
+UserSchema.statics.login = async function (registration, password) {
     const user = await this.findOne({ registration })
     if (user) {
         const auth = await bcrypt.compare(password, user.password)
